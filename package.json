@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha $(find test -name '*.js')"
+    "start": "node server.js",
+    "test": "mocha $(find test -name '*.js')",
+    "dev": " ./node_modules/nodemon/bin/nodemon.js server.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,8 +14,10 @@
     "chai": "^3.4.1",
     "chai-as-promised": "^5.1.0",
     "crypto": "0.0.3",
+    "hapi": "^11.1.1",
     "lodash": "^3.10.1",
     "mocha": "^2.3.3",
+    "nodemon": "^1.8.1",
     "require-all": "^2.0.0",
     "rest": "^1.3.1",
     "when": "^3.7.4"

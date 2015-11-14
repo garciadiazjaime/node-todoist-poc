@@ -33,3 +33,17 @@ var todoist = require('require-all')(__dirname + '/lib/todoist');
 // todoist.completeItemsFromProject(155704829, [6836684]).then(function(response) {
 //   console.log('response', response);
 // });
+
+
+var Hapi = require('hapi');
+
+var server = new Hapi.Server();
+server.connection({ port: 3000 });
+
+var todoistRoutes = require('./routes/todoistRoutes');
+
+server.route(todoistRoutes);
+
+server.start(function() {
+    console.log('Server running at:', server.info.uri);
+});
