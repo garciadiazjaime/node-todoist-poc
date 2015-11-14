@@ -30,6 +30,6 @@ var todoist = require('require-all')(__dirname + '/lib/todoist');
 //   });
 
 // 6836684 "lets do this again" from proj5
-todoist.completeItemsFromProject(155704829, [6836684]).then(function(response) {
-  console.log('response', response);
-});
+// todoist.completeItemsFromProject(155704829, [6836684]).then(function(response) {
+//   console.log('response', response);
+// });
