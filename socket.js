@@ -1,7 +1,23 @@
 const when = require('when');
+const http = require('http');
+const express = require('express');
+const app = express();
+const WebSocketServer = require('ws').Server;
 
-var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({ port: 3333 });
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', function(req, res) {
+  res.sendfile('index.html');
+});
+
+
+var server = http.createServer(app);
+server.listen(3333);
+
+
+// var WebSocketServer = require('ws').Server;
+var wss = new WebSocketServer({server: server});
+// var wss = new WebSocketServer({ port: 3333 });
 
 var todoist = require('require-all')(__dirname + '/lib/todoist');
 
