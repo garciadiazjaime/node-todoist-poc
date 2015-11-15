@@ -3,6 +3,8 @@ const http = require('http');
 const express = require('express');
 const app = express();
 const WebSocketServer = require('ws').Server;
+var todoist = require('require-all')(__dirname + '/lib/todoist');
+var projectID = 155704829;
 
 app.use(express.static(__dirname + '/public'));
 
@@ -19,7 +21,28 @@ app.get('/running', function(req, res) {
 });
 
 app.get('/success', function(req, res) {
+  todoist.getItemsFromProject(projectID).then(function(response) {
+    var itemsIDs = response.map(function(item) {
+      return item.id;
+    });
+    todoist.completeItemsFromProject(projectID, itemsIDs)
+      .then(function(response) {
+        console.log('items completes', response);
+      });
+    console.log('getItemsFromProject itemsIDs', itemsIDs);
+  });
   res.sendfile('templates/success.html');
+});
+
+app.get('/setup_project', function(req, res) {
+  var items = ['4::Squats', '3::Abdominals', '4::Pushups'];
+  items.map(function(item) {
+    todoist.addItemToProject(projectID, item)
+      .then(function(response) {
+        console.log('addItemToProject response', response);
+      });
+  });
+  res.send('tijuana makes me happy');
 });
 
 
@@ -61,6 +84,12 @@ wss.on('connection', function connection(ws) {
       console.log('pebble_exercise_finish');
       wss.clients.forEach(function each(client) {
         client.send('exercise_finish');
+      });
+    }
+    else if (message === 'pebble_exercise_bits') {
+      console.log('pebble_exercise_bits');
+      wss.clients.forEach(function each(client) {
+        client.send('exercise_bits');
       });
     }
   });

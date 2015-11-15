@@ -61,6 +61,16 @@ $(document).ready(function() {
         }
       }
     }
+    else if (evt.data === 'exercise_bits') {
+      var items = $('#data li');
+      for (var i = 0, len = items.length; i < len; i++) {
+        if ($(items[i]).hasClass('active') && !$(items[i]).hasClass('finished')) {
+          var countes = parseInt($($(items[i]).find('span')[0]).text());
+          $($(items[i]).find('span')[0]).text(countes - 1);
+          break;
+        }
+      }
+    }
     else if (evt.data === 'exercise_complete') {
       var items = $('#data li');
       for (var i = 0, len = items.length; i < len; i++) {
