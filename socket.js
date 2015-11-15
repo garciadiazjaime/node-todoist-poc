@@ -41,14 +41,21 @@ wss.on('connection', function connection(ws) {
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
     if (message === 'start_routine') {
-      console.log('here');
-      // ws.send('pebble_start_routine');
-
       wss.clients.forEach(function each(client) {
         client.send('pebble_start_routine');
       });
-
-
+    }
+    else if (message === 'pebble_exercise_start') {
+      console.log('pebble_exercise_start');
+      wss.clients.forEach(function each(client) {
+        client.send('exercise_start');
+      });
+    }
+    else if (message === 'pebble_exercise_complete') {
+      console.log('exercise_complete');
+      wss.clients.forEach(function each(client) {
+        client.send('exercise_complete');
+      });
     }
   });
 

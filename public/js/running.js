@@ -11,10 +11,10 @@ $(document).ready(function() {
       $('#data').append(html);
     });
 
-    $('#btn_start').click(function() {
-      doSend('start_routine');
-      return false;
-    });
+    // $('#btn_start').click(function() {
+    //   doSend('start_routine');
+    //   return false;
+    // });
     init();
   });
 
@@ -35,9 +35,9 @@ $(document).ready(function() {
     };
     websocket.onmessage = function(evt) {
       onMessage(evt);
-      if (evt.data === 'pebble_start_routine') {
-        document.location.href = 'running';
-      }
+      // if (evt.data === 'pebble_start_routine') {
+      //   document.location.href = 'running';
+      // }
     };
     websocket.onerror = function(evt) {
       onError(evt);
@@ -51,7 +51,26 @@ $(document).ready(function() {
   }
   function onMessage(evt) {
     writeToScreen(evt.data);
-    websocket.close();
+    if (evt.data === 'exercise_start') {
+      console.log('exercise_start');
+      var items = $('#data li');
+      for (var i = 0, len = items.length; i < len; i++) {
+        if (!$(items[i]).hasClass('active') && !$(items[i]).hasClass('finished')) {
+          $(items[i]).addClass('active');
+          break;
+        }
+      }
+    }
+    else if (evt.data === 'exercise_complete') {
+      var items = $('#data li');
+      for (var i = 0, len = items.length; i < len; i++) {
+        if ($(items[i]).hasClass('active') && !$(items[i]).hasClass('finished')) {
+          $(items[i]).addClass('finished');
+          break;
+        }
+      }
+    }
+    // websocket.close();
   }
   function onError(evt) {
     writeToScreen(evt.data);
@@ -64,3 +83,19 @@ $(document).ready(function() {
     console.log(message);
   }
 });
+
+//
+// <ul>
+//   <li class="finished">
+//     <span class="blue">30</span> push-ups
+//   </li>
+//   <li class="dark active">
+//     <span class="blue">15</span> pull-ups
+//   </li>
+//   <li>
+//     <span class="blue">30</span> sit-ups
+//   </li>
+//   <li class="dark">
+//     <span class="blue">20</span> push-ups
+//   </li>
+// </ul>
