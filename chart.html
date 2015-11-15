@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      body{
+        font-size: 42px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      x: <span id="accel_x"></span> <br />
+      y: <span id="accel_y"></span> <br />
+      z: <span id="accel_z"></span>
+      <br /><br />
+      Status: <span id="metric_b"></span> <br />
+    </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+
+      socket.on('update_chart', function(data){
+        var bits = data.accel.split(';')
+
+        document.getElementById('accel_x').innerHTML = bits[0];
+        document.getElementById('accel_y').innerHTML = bits[1];
+        document.getElementById('accel_z').innerHTML = bits[2];
+
+        if (Math.abs(bits[0]) > 200 &&
+          Math.abs(bits[1]) > 200 &&
+          Math.abs(bits[2])  > 200
+        ) {
+          document.getElementById('metric_b').innerHTML = 'true';
+        }
+        else {
+          document.getElementById('metric_b').innerHTML = 'false';
+        }
+      });
+    </script>
+  </body>
+</html>
