@@ -36,8 +36,20 @@ var todoist = require('require-all')(__dirname + '/lib/todoist');
 var todosIDs = {};
 
 wss.on('connection', function connection(ws) {
+  console.log('new connection');
+
   ws.on('message', function incoming(message) {
     console.log('received: %s', message);
+    if (message === 'start_routine') {
+      console.log('here');
+      // ws.send('pebble_start_routine');
+
+      wss.clients.forEach(function each(client) {
+        client.send('pebble_start_routine');
+      });
+
+
+    }
   });
 
   ws.on('close', function close() {
@@ -45,7 +57,7 @@ wss.on('connection', function connection(ws) {
   });
 
 
-  emulateSign(ws);
+  // emulateSign(ws);
   // var cont = 0;
   // var projectID = 155704829;
   //

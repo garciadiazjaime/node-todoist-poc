@@ -1,17 +1,63 @@
 $(document).ready(function() {
-  $('#content').hide();
   var API_URL = 'http://10.0.6.80:3000/api/todoist/project/155704829/items';
   $.get(API_URL, function(data) {
-    $('#loading').hide();
     $('#content').show();
-    console.log('data', data.data);
     data.data.map(function(item, index) {
       var classEven = index % 2 ? 'dark' : '';
       var bits = item.content.split('::');
       var exercice = bits[1];
       var repetitions = bits[0];
-      var html = '<li><span class="blue">' + repetitions + '</span> ' + exercice + '</li>';
+      var html = '<li><span class=\'blue\'>' + repetitions + '</span> ' + exercice + '</li>';
       $('#data').append(html);
     });
+
+    $('#btn_start').click(function() {
+      doSend('start_routine');
+      return false;
+    });
+    init();
   });
+
+
+  var wsUri = 'ws://10.0.6.80:3333/';
+  var output;
+  function init() {
+    // output = document.getElementById('output');
+    testWebSocket();
+  }
+  function testWebSocket() {
+    websocket = new WebSocket(wsUri);
+    websocket.onopen = function(evt) {
+      onOpen(evt);
+    };
+    websocket.onclose = function(evt) {
+      onClose(evt);
+    };
+    websocket.onmessage = function(evt) {
+      onMessage(evt);
+    };
+    websocket.onerror = function(evt) {
+      onError(evt);
+    };
+  }
+  function onOpen(evt) {
+    writeToScreen('CONNECTED');
+  }
+  function onClose(evt) {
+    writeToScreen('DISCONNECTED');
+  }
+  function onMessage(evt) {
+    writeToScreen(evt.data);
+    websocket.close();
+  }
+  function onError(evt) {
+    writeToScreen(evt.data);
+  }
+  function doSend(message) {
+    writeToScreen('SENT: ' + message);
+    websocket.send(message);
+  }
+  function writeToScreen(message) {
+    console.log(message);
+  }
 });
