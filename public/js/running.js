@@ -70,6 +70,9 @@ $(document).ready(function() {
         }
       }
     }
+    else if (evt.data === 'exercise_finish') {
+      document.location.href = 'success';
+    }
     // websocket.close();
   }
   function onError(evt) {

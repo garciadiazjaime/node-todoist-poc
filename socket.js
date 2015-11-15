@@ -57,6 +57,12 @@ wss.on('connection', function connection(ws) {
         client.send('exercise_complete');
       });
     }
+    else if (message === 'pebble_exercise_finish') {
+      console.log('pebble_exercise_finish');
+      wss.clients.forEach(function each(client) {
+        client.send('exercise_finish');
+      });
+    }
   });
 
   ws.on('close', function close() {
