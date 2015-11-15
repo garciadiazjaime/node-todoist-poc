@@ -5,6 +5,7 @@ function addProject(request, reply) {
   var name = request.payload.name;
 
   todoist.addProject(name).then(function(data) {
+    console.log('addProject', data);
     reply({
       status: true,
       data: data

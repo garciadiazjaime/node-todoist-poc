@@ -41,8 +41,10 @@ var server = new Hapi.Server();
 server.connection({ port: 3000 });
 
 var todoistRoutes = require('./routes/todoistRoutes');
+var routes = require('./routes/pebbleRoutes');
 
 server.route(todoistRoutes);
+server.route(routes);
 
 server.start(function() {
     console.log('Server running at:', server.info.uri);
