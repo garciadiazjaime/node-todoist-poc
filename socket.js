@@ -7,7 +7,19 @@ const WebSocketServer = require('ws').Server;
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
-  res.sendfile('index.html');
+  res.sendfile('templates/index.html');
+});
+
+app.get('/start', function(req, res) {
+  res.sendfile('templates/start.html');
+});
+
+app.get('/running', function(req, res) {
+  res.sendfile('templates/running.html');
+});
+
+app.get('/success', function(req, res) {
+  res.sendfile('templates/success.html');
 });
 
 
