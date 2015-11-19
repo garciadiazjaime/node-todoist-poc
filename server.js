@@ -33,3 +33,26 @@ var todoist = require('require-all')(__dirname + '/lib/todoist');
 // todoist.completeItemsFromProject(155704829, [6836684]).then(function(response) {
 //   console.log('response', response);
 // });
+
+
+var Hapi = require('hapi');
+
+var server = new Hapi.Server({
+  connections: {
+    routes: {
+      cors: true
+    }
+  }
+});
+server.connection({ port: 3000 });
+
+var todoistRoutes = require('./routes/todoistRoutes');
+var routes = require('./routes/pebbleRoutes');
+
+server.route(todoistRoutes);
+server.route(routes);
+// server.connection({ routes: { cors: false } });
+
+server.start(function() {
+    console.log('Server running at:', server.info.uri);
+});
